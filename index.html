@@ -3,687 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>면접 준비를 해보자ㅎㅎㅎㅎㅎ</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        overflow-x: hidden;
-        font-family: "Comic Sans MS", cursive;
-        touch-action: pan-y;
-      }
-
-      /* 경고 화면 */
-      #warning-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #000;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-      }
-      #warning-screen.hidden {
-        display: none;
-      }
-      .warning-content {
-        text-align: center;
-        max-width: 90%;
-      }
-      .warning-title {
-        color: #ff0000;
-        font-size: clamp(1.5rem, 5vw, 3rem);
-        margin-bottom: 30px;
-        animation: blink 1s infinite;
-        text-shadow: 0 0 10px #ff0000;
-      }
-      @keyframes blink {
-        0%,
-        50%,
-        100% {
-          opacity: 1;
-        }
-        25%,
-        75% {
-          opacity: 0.3;
-        }
-      }
-      .warning-text {
-        color: #fff;
-        font-size: clamp(0.9rem, 3vw, 1.2rem);
-        line-height: 1.6;
-        margin-bottom: 40px;
-      }
-      .warning-button {
-        background: #ff0000;
-        color: #fff;
-        border: none;
-        padding: 15px 40px;
-        font-size: clamp(1rem, 4vw, 1.5rem);
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 10px;
-        font-family: "Comic Sans MS", cursive;
-        animation: pulse 1.5s infinite;
-        box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.1);
-        }
-      }
-      .warning-button:active {
-        transform: scale(0.95);
-      }
-
-      /* 메인 컨텐츠 */
-      #main-content {
-        display: none;
-      }
-      #main-content.active {
-        display: block;
-      }
-
-      #bg-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-      }
-      #header {
-        width: 100vw;
-        min-height: 15vh;
-        padding: 20px 10px;
-        color: #ff0000;
-        display: flex;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0, 0, 0, 0.7);
-        text-shadow: 2px 2px 0px #000;
-        animation:
-          seizure 0.1s infinite,
-          shake-hard 0.2s infinite;
-      }
-      #header h1 {
-        font-size: clamp(1.2rem, 5vw, 2.5rem);
-      }
-      @keyframes seizure {
-        0% {
-          transform: translate(0) rotate(0deg);
-          filter: hue-rotate(0deg);
-        }
-        25% {
-          transform: translate(-5px, 5px) rotate(2deg);
-          filter: hue-rotate(90deg);
-        }
-        50% {
-          transform: translate(5px, -5px) rotate(-2deg);
-          filter: hue-rotate(180deg);
-        }
-        75% {
-          transform: translate(-5px, -5px) rotate(1deg);
-          filter: hue-rotate(270deg);
-        }
-        100% {
-          transform: translate(5px, 5px) rotate(-1deg);
-          filter: hue-rotate(360deg);
-        }
-      }
-      @keyframes shake-hard {
-        0%,
-        100% {
-          transform: translateX(0) translateY(0) rotate(0deg);
-        }
-        10% {
-          transform: translateX(-10px) translateY(-5px) rotate(-3deg);
-        }
-        20% {
-          transform: translateX(10px) translateY(5px) rotate(3deg);
-        }
-        30% {
-          transform: translateX(-10px) translateY(5px) rotate(-2deg);
-        }
-        40% {
-          transform: translateX(10px) translateY(-5px) rotate(2deg);
-        }
-        50% {
-          transform: translateX(-5px) translateY(-10px) rotate(-1deg);
-        }
-        60% {
-          transform: translateX(5px) translateY(10px) rotate(1deg);
-        }
-        70% {
-          transform: translateX(-5px) translateY(10px) rotate(-2deg);
-        }
-        80% {
-          transform: translateX(5px) translateY(-10px) rotate(2deg);
-        }
-        90% {
-          transform: translateX(-3px) translateY(3px) rotate(-1deg);
-        }
-      }
-      figure {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: transparent;
-        animation:
-          crazy-spin 1s linear infinite,
-          bounce 0.5s infinite;
-        padding: 20px 0;
-      }
-      @keyframes crazy-spin {
-        0% {
-          transform: rotate(0deg) scale(1);
-        }
-        25% {
-          transform: rotate(90deg) scale(1.5);
-        }
-        50% {
-          transform: rotate(180deg) scale(0.5);
-        }
-        75% {
-          transform: rotate(270deg) scale(1.8);
-        }
-        100% {
-          transform: rotate(360deg) scale(1);
-        }
-      }
-      @keyframes bounce {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-30px);
-        }
-      }
-      img {
-        width: clamp(80px, 20vw, 150px);
-        filter: hue-rotate(0deg) brightness(2);
-        animation: rainbow-crazy 0.3s linear infinite;
-      }
-      @keyframes rainbow-crazy {
-        0% {
-          filter: hue-rotate(0deg) brightness(2) saturate(5);
-        }
-        50% {
-          filter: hue-rotate(180deg) brightness(0.5) saturate(10);
-        }
-        100% {
-          filter: hue-rotate(360deg) brightness(2) saturate(5);
-        }
-      }
-      #content {
-        background: transparent;
-        padding: 5vw;
-      }
-      .q {
-        margin: 3vw 2vw;
-        color: #ff0000;
-        background: rgba(0, 0, 0, 0.8);
-        padding: 15px;
-        border: 3px solid #ff0000;
-        font-size: clamp(1rem, 3.5vw, 1.5rem);
-        animation:
-          vibrate 0.1s infinite,
-          color-flash 0.5s infinite;
-        word-wrap: break-word;
-      }
-      .a {
-        margin: 3vw 2vw;
-        color: #00ff00;
-        background: rgba(0, 0, 0, 0.8);
-        padding: 15px;
-        border: 3px solid #00ff00;
-        font-size: clamp(0.9rem, 3vw, 1.3rem);
-        animation:
-          mega-shake 0.15s infinite,
-          color-flash-green 0.3s infinite;
-        word-wrap: break-word;
-      }
-      @keyframes vibrate {
-        0% {
-          transform: translate(0, 0) rotate(0deg);
-        }
-        25% {
-          transform: translate(-3px, 3px) rotate(-2deg);
-        }
-        50% {
-          transform: translate(3px, -3px) rotate(2deg);
-        }
-        75% {
-          transform: translate(-3px, -3px) rotate(-1deg);
-        }
-        100% {
-          transform: translate(3px, 3px) rotate(1deg);
-        }
-      }
-      @keyframes mega-shake {
-        0%,
-        100% {
-          transform: translate(0, 0) rotate(0deg) scale(1);
-        }
-        10% {
-          transform: translate(-5px, -3px) rotate(-3deg) scale(1.05);
-        }
-        20% {
-          transform: translate(5px, 3px) rotate(3deg) scale(0.95);
-        }
-        30% {
-          transform: translate(-4px, 4px) rotate(-2deg) scale(1.02);
-        }
-        40% {
-          transform: translate(4px, -4px) rotate(2deg) scale(0.98);
-        }
-        50% {
-          transform: translate(-3px, -5px) rotate(-3deg) scale(1.04);
-        }
-        60% {
-          transform: translate(3px, 5px) rotate(3deg) scale(0.96);
-        }
-        70% {
-          transform: translate(-3px, 3px) rotate(-1deg) scale(1.01);
-        }
-        80% {
-          transform: translate(3px, -3px) rotate(1deg) scale(0.99);
-        }
-        90% {
-          transform: translate(-2px, 2px) rotate(-1deg) scale(1.005);
-        }
-      }
-      @keyframes color-flash {
-        0%,
-        100% {
-          background: rgba(255, 0, 0, 0.8);
-          color: #ffff00;
-        }
-        50% {
-          background: rgba(0, 255, 0, 0.8);
-          color: #ff00ff;
-        }
-      }
-      @keyframes color-flash-green {
-        0%,
-        100% {
-          background: rgba(0, 255, 0, 0.8);
-          color: #00ffff;
-        }
-        33% {
-          background: rgba(255, 0, 255, 0.8);
-          color: #ffff00;
-        }
-        66% {
-          background: rgba(0, 255, 255, 0.8);
-          color: #ff0000;
-        }
-      }
-      #footer {
-        width: 100vw;
-        min-height: 15vh;
-        padding: 20px;
-        color: yellow;
-        display: flex;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0, 0, 0, 0.7);
-        font-size: clamp(1.5rem, 6vw, 3rem);
-        text-shadow: 2px 2px 0px #000;
-        animation: footer-crazy 0.2s infinite;
-      }
-      @keyframes footer-crazy {
-        0% {
-          transform: scale(1) rotate(0deg);
-        }
-        50% {
-          transform: scale(1.2) rotate(5deg);
-        }
-        100% {
-          transform: scale(1) rotate(-5deg);
-        }
-      }
-      .explosion {
-        position: fixed;
-        width: clamp(100px, 30vw, 200px);
-        height: clamp(100px, 30vw, 200px);
-        background: radial-gradient(circle, #ff0000, #ff8800, transparent);
-        border-radius: 50%;
-        pointer-events: none;
-        animation: explode 0.5s ease-out forwards;
-      }
-      @keyframes explode {
-        0% {
-          transform: scale(0);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(5);
-          opacity: 0;
-        }
-      }
-
-      @media (max-width: 768px) {
-        #header {
-          min-height: 12vh;
-        }
-        .q,
-        .a {
-          margin: 4vw 3vw;
-        }
-      }
-    </style>
+    <title>면접 준비를 해보자</title>
   </head>
   <body>
-    <!-- 경고 화면 -->
-    <div id="warning-screen">
-      <div class="warning-content">
-        <div class="warning-title">경고</div>
-        <div class="warning-text">
-          이 사이트는 광과민성 발작을 유발할 수 있는<br />
-          빠르게 깜빡이는 이미지와 색상이 포함되어 있습니다.<br /><br />
-          광과민성 간질이 있거나 발작 병력이 있는 경우<br />
-          즉시 이 페이지를 떠나주세요.<br /><br />
-          <strong style="color: #ff0000">본인의 책임하에 진행하십시오.</strong>
-        </div>
-        <button class="warning-button" onclick="startSite()">ㅗ</button>
-      </div>
-    </div>
+    <header id="header"><h1>면접 쥰비.</h1></header>
+    <content id="content">
+      <h3 id="q">Q1 : 그동안 가장 마음에 들었던 작업?</h3>
+      <h4 id="a">
+        대학교 3학년 때 했던 작업 며칠 밤을 새고 완성시키고 대상이라는 전화로
+        왔을 때 그 기분을 잊을 수 없습니다.
+      </h4>
 
-    <!-- 메인 컨텐츠 -->
-    <div id="main-content">
-      <canvas id="bg-canvas"></canvas>
+      <h3 id="q">Q2 : 디자인 할 때 중요시 여기는 점?</h3>
+      <h4 id="a">
+        사용자의 사용성을 가장 중요하게 생각합니다. 예전 다이닝 프로젝트를 했을
+        때 어떻게 하면 사람들에게 가장 만족감을 줄 수 있고 감동을 줄수 있을지
+        생각하고 작업을 하였을 때 사람들의 평가가 가장 좋았습니다
+      </h4>
 
-      <header id="header">
-        <h1>💀 있지도 않은 면접 준비 💀</h1>
-      </header>
+      <h3 id="q">Q3 : 좋아하는 브랜드</h3>
+      <h4 id="a">
+        마리메꼬라는 브랜드를 가장 좋아합니다. 꽃무늬, 라시마트 등 한 번 보면
+        잊을 수 없는 강렬한 그래픽 패턴, 칙칙한 일상에 갑자기 기쁨과 에너지를
+        불어넣어주는 느낌이 제일 크다고 생각합니다. 핀란드 디자인 특유의 실용성
+        따뜻함 자유로움이 동시에 느껴져서 중독됩니다.
+      </h4>
 
-      <figure>
-        <img
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23brown'/%3E%3Crect x='10' y='10' width='30' height='30' fill='%23654321'/%3E%3Crect x='60' y='10' width='30' height='30' fill='%23654321'/%3E%3Crect x='10' y='60' width='80' height='30' fill='%23000'/%3E%3C/svg%3E"
-          alt="스티브"
-        />
-      </figure>
+      <h3 id="q">Q4 : 야근 할 수 있어요?</h3>
+      <h4 id="a">
+        네 당연히 할 수 있습니다. 평소에 효율적으로 일해서 야근을 지양하겠지만,
+        완성도를 위한 야근이라면 남아서 마무리하는것이 더 중요하다고 생각합니다.
+      </h4>
 
-      <content id="content">
-        <h3 class="q">Q1 : 왜 태어나셨어요?</h3>
-        <h4 class="a">그냥요.</h4>
+      <h3 id="q">Q3 : 회사에 대한 정보</h3>
+      <h4 id="a">
+        IP기반(지식재산권) 기반의 OSMU 전문 기업입니다. 하나의 ip를 다양한
 
-        <h3 class="q">Q2 : 뭐하러 지원하셨어요?</h3>
-        <h4 class="a">그냥요.</h4>
+        콘텐츠, 제품, 서비스로 확장하는 비즈니스를 전개하고 있습니다. 굿즈
+        리테일 영상콘텐츠 캐릭터 공간 팬 콘텐츠 등으로 유연하게 확장함으로써
+        고유한 브랜드 생태계를 구축해 나가고 있씁니다.
+      </h4>
 
-        <h3 class="q">Q3 : 꺼지세요</h3>
-        <h4 class="a">에.</h4>
-      </content>
+      <h3 id="q">Q3 : 스트레스 관리는 어떻게 하는지</h3>
+      <h4 id="a">피아노, 그림그리기 등으로 스트레스를 관리합니다.</h4>
 
-      <footer id="footer">ㅉㅉ</footer>
-    </div>
+      <h3 id="q">Q3 : 애완동물 회사의 전망은?</h3>
+      <h4 id="a">
+        는 펫 산업을 가장 강력한 팬덤 비즈니스라고 생각합니다. 반려동물을
+        가족으로 여기는 '펫 휴머니제이션' 트렌드 덕분에 사용자의 충성도가 매우
+        높기 때문입니다. 특히 비엠스마일처럼 자사몰 비중이 높은 기업은 고객
+        데이터를 직접 확보할 수 있어, 향후 펫테크나 맞춤형 서비스로 확장성이
+        무궁무진하다고 봅니다. 저는 이런 성장하는 시장에서 사용자가 브랜드
+        가치를 온전히 느낄 수 있도록 최고의 웹 인터페이스를 구현하고 싶습니다."
+      </h4>
+      <h3 id="q">Q3 : 입사 후 해보고 싶은 프로젝트</h3>
+      <h4 id="a">위글위글</h4>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-      let isStarted = false;
+      <h3 id="q">Q3 : 회사 제품을 써본적 있는지?</h3>
+      <h4 id="a">아뇨 사용해보지 않았습니다.</h4>
 
-      function startSite() {
-        document.getElementById("warning-screen").classList.add("hidden");
-        document.getElementById("main-content").classList.add("active");
-        isStarted = true;
-        initThreeJS();
-      }
-
-      function initThreeJS() {
-        const canvas = document.getElementById("bg-canvas");
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(
-          75,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          1000,
-        );
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        // 스티브 캐릭터 생성
-        function createSteve(x, y, z) {
-          const steve = new THREE.Group();
-
-          const headGeo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
-          const headMat = new THREE.MeshBasicMaterial({ color: 0xc39e77 });
-          const head = new THREE.Mesh(headGeo, headMat);
-          head.position.y = 1.5;
-          steve.add(head);
-
-          const bodyGeo = new THREE.BoxGeometry(0.8, 1.2, 0.4);
-          const bodyMat = new THREE.MeshBasicMaterial({ color: 0x4a90e2 });
-          const body = new THREE.Mesh(bodyGeo, bodyMat);
-          body.position.y = 0.6;
-          steve.add(body);
-
-          const armGeo = new THREE.BoxGeometry(0.3, 1.2, 0.3);
-          const armMat = new THREE.MeshBasicMaterial({ color: 0xc39e77 });
-          const leftArm = new THREE.Mesh(armGeo, armMat);
-          leftArm.position.set(-0.55, 0.6, 0);
-          steve.add(leftArm);
-          const rightArm = new THREE.Mesh(armGeo, armMat);
-          rightArm.position.set(0.55, 0.6, 0);
-          steve.add(rightArm);
-
-          const legGeo = new THREE.BoxGeometry(0.3, 1.2, 0.3);
-          const legMat = new THREE.MeshBasicMaterial({ color: 0x2c5aa0 });
-          const leftLeg = new THREE.Mesh(legGeo, legMat);
-          leftLeg.position.set(-0.25, -0.6, 0);
-          steve.add(leftLeg);
-          const rightLeg = new THREE.Mesh(legGeo, legMat);
-          rightLeg.position.set(0.25, -0.6, 0);
-          steve.add(rightLeg);
-
-          steve.position.set(x, y, z);
-          return steve;
-        }
-
-        // 크리퍼 생성
-        function createCreeper(x, y, z) {
-          const creeper = new THREE.Group();
-
-          const headGeo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
-          const headMat = new THREE.MeshBasicMaterial({ color: 0x0da70b });
-          const head = new THREE.Mesh(headGeo, headMat);
-          head.position.y = 1.5;
-          creeper.add(head);
-
-          const eyeGeo = new THREE.BoxGeometry(0.15, 0.15, 0.05);
-          const eyeMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-          const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
-          leftEye.position.set(-0.2, 1.6, 0.4);
-          creeper.add(leftEye);
-          const rightEye = new THREE.Mesh(eyeGeo, eyeMat);
-          rightEye.position.set(0.2, 1.6, 0.4);
-          creeper.add(rightEye);
-
-          const mouthGeo = new THREE.BoxGeometry(0.15, 0.4, 0.05);
-          const mouth = new THREE.Mesh(mouthGeo, eyeMat);
-          mouth.position.set(0, 1.3, 0.4);
-          creeper.add(mouth);
-
-          const bodyGeo = new THREE.BoxGeometry(0.6, 1.2, 0.4);
-          const bodyMat = new THREE.MeshBasicMaterial({ color: 0x0da70b });
-          const body = new THREE.Mesh(bodyGeo, bodyMat);
-          body.position.y = 0.6;
-          creeper.add(body);
-
-          const legGeo = new THREE.BoxGeometry(0.2, 0.6, 0.2);
-          const legMat = new THREE.MeshBasicMaterial({ color: 0x0da70b });
-          const legs = [
-            [-0.2, 0, 0.1],
-            [0.2, 0, 0.1],
-            [-0.2, 0, -0.1],
-            [0.2, 0, -0.1],
-          ];
-          legs.forEach((pos) => {
-            const leg = new THREE.Mesh(legGeo, legMat);
-            leg.position.set(pos[0], pos[1], pos[2]);
-            creeper.add(leg);
-          });
-
-          creeper.position.set(x, y, z);
-          return creeper;
-        }
-
-        // 큐브들
-        const cubes = [];
-        const cubeCount = window.innerWidth < 768 ? 15 : 30;
-        for (let i = 0; i < cubeCount; i++) {
-          const geometry = new THREE.BoxGeometry(1, 1, 1);
-          const materials = Array(6)
-            .fill(null)
-            .map(
-              () =>
-                new THREE.MeshBasicMaterial({
-                  color: Math.random() * 0xffffff,
-                  wireframe: true,
-                }),
-            );
-          const cube = new THREE.Mesh(geometry, materials);
-          cube.position.x = (Math.random() - 0.5) * 30;
-          cube.position.y = (Math.random() - 0.5) * 30;
-          cube.position.z = (Math.random() - 0.5) * 30;
-          scene.add(cube);
-          cubes.push(cube);
-        }
-
-        // 스티브들
-        const steves = [];
-        const steveCount = window.innerWidth < 768 ? 3 : 5;
-        for (let i = 0; i < steveCount; i++) {
-          const steve = createSteve(
-            (Math.random() - 0.5) * 20,
-            (Math.random() - 0.5) * 10,
-            (Math.random() - 0.5) * 20,
-          );
-          scene.add(steve);
-          steves.push(steve);
-        }
-
-        // 크리퍼들
-        const creepers = [];
-        const creeperCount = window.innerWidth < 768 ? 4 : 8;
-        for (let i = 0; i < creeperCount; i++) {
-          const creeper = createCreeper(
-            (Math.random() - 0.5) * 25,
-            (Math.random() - 0.5) * 10,
-            (Math.random() - 0.5) * 25,
-          );
-          scene.add(creeper);
-          creepers.push(creeper);
-        }
-
-        camera.position.z = 15;
-
-        // 폭발 효과
-        function createExplosion(x, y) {
-          const explosion = document.createElement("div");
-          explosion.className = "explosion";
-          explosion.style.left = x + "px";
-          explosion.style.top = y + "px";
-          document.body.appendChild(explosion);
-          setTimeout(() => explosion.remove(), 500);
-        }
-
-        let explosionTimer = 0;
-
-        function animate() {
-          requestAnimationFrame(animate);
-
-          cubes.forEach((cube) => {
-            cube.rotation.x += 0.05;
-            cube.rotation.y += 0.05;
-            cube.position.y +=
-              Math.sin(Date.now() * 0.003 + cube.position.x) * 0.03;
-          });
-
-          steves.forEach((steve, i) => {
-            steve.rotation.y += 0.05;
-            steve.position.x += Math.sin(Date.now() * 0.001 + i) * 0.05;
-            steve.position.y += Math.cos(Date.now() * 0.002 + i) * 0.05;
-            steve.children[3].rotation.x = Math.sin(Date.now() * 0.005) * 0.5;
-            steve.children[4].rotation.x =
-              Math.sin(Date.now() * 0.005 + Math.PI) * 0.5;
-          });
-
-          creepers.forEach((creeper, i) => {
-            creeper.rotation.y += 0.03;
-            creeper.position.x += Math.cos(Date.now() * 0.002 + i) * 0.04;
-            creeper.position.z += Math.sin(Date.now() * 0.002 + i) * 0.04;
-            creeper.position.y += Math.sin(Date.now() * 0.05 + i) * 0.02;
-            creeper.rotation.x = Math.sin(Date.now() * 0.03) * 0.1;
-          });
-
-          explosionTimer++;
-          if (explosionTimer > 60) {
-            if (Math.random() > 0.7) {
-              createExplosion(
-                Math.random() * window.innerWidth,
-                Math.random() * window.innerHeight,
-              );
-            }
-            explosionTimer = 0;
-          }
-
-          camera.position.x = Math.sin(Date.now() * 0.002) * 10;
-          camera.position.y = Math.cos(Date.now() * 0.001) * 8;
-          camera.position.z = 15 + Math.sin(Date.now() * 0.003) * 5;
-          camera.lookAt(scene.position);
-
-          renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener("resize", () => {
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        // 터치/클릭 이벤트
-        const handleInteraction = (e) => {
-          const x = e.touches ? e.touches[0].clientX : e.clientX;
-          const y = e.touches ? e.touches[0].clientY : e.clientY;
-
-          createExplosion(x, y);
-          cubes.forEach((cube) => {
-            cube.material.forEach((mat) => {
-              mat.color.setHex(Math.random() * 0xffffff);
-            });
-          });
-
-          creepers.forEach((creeper) => {
-            creeper.children.forEach((part) => {
-              if (part.material) {
-                part.material.color.setHex(
-                  Math.random() > 0.5 ? 0xff0000 : 0x0da70b,
-                );
-              }
-            });
-          });
-        };
-
-        document.addEventListener("click", handleInteraction);
-        document.addEventListener("touchstart", handleInteraction);
-      }
-    </script>
+      <h3 id="q">Q3 : 사회생활 하면서 가장 힘드었던점</h3>
+      <h4 id="a">흠.....</h4>
+    </content>
+    <footer id="footer">권용선.</footer>
   </body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background: #0c0404;
+    }
+    #header {
+      width: 100vw;
+      height: 20vh;
+      color: crimson;
+
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+    #q {
+      margin: 1vw;
+      margin-left: 10vw;
+
+      color: crimson;
+    }
+    #a {
+      margin: 2vw;
+      margin-left: 10.3vw;
+
+      color: #fff;
+    }
+    #footer {
+      width: 100vw;
+      height: 20vh;
+      color: white;
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </html>
